@@ -13,33 +13,29 @@ export class DashboardComponent implements OnInit {
 
   route1: any;
   route2: any;
+  stops1Completed: boolean;
+  stops2Completed: boolean;
 
   constructor(
     private routeService: RouteService
   ) { }
 
-
   ngOnInit() {
   }
 
   createRoutes() {
-    const route1 = {
-      routePlan: 'M Dias Branco'
-    };
-    this.routeService.createRoute(route1).subscribe(
-      response => {
-        console.log('success: ', response);
-        this.route1 = response.body;
+    const route1 = { routePlan: 'M Dias Branco' };
+    const route2 = { routePlan: 'Coca Cola' };
+    this.routeService.createRoute(route1).pipe(concatMap(
+      response1 => {
+        this.route1 = response1.body;
+        return this.routeService.createRoute(route2);
       }
-    );
-    const route2 = {
-      routePlan: 'Coca Cola'
-    };
-    this.routeService.createRoute(route2).subscribe(
-      response => {
-        console.log('success: ', response);
-        this.route2 = response.body;
-      }
+    )).subscribe(
+      response2 => {
+        this.route2 = response2.body;
+      },
+      erro => console.log(erro)
     );
   }
 
@@ -79,6 +75,7 @@ export class DashboardComponent implements OnInit {
       concatMap(result2 => this.routeService.createStop(stop3))
     ).subscribe(
       result3 => {
+        this.stops1Completed = true;
         console.log('sucess', result3);
       },
       erro => console.log('Error', erro)
@@ -106,6 +103,7 @@ export class DashboardComponent implements OnInit {
       concatMap(result1 => this.routeService.createStop(stop2))
     ).subscribe(
       result2 => {
+        this.stops2Completed = true;
         console.log('sucess', result2);
       },
       erro => console.log('Error', erro)
