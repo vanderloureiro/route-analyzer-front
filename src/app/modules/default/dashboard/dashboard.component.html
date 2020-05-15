@@ -10,7 +10,7 @@
                     <p>Create predefined routes</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-flat-button color="primary"(click)="createRoutes()">Start</button>
+                    <button mat-flat-button color="primary" (click)="createRoutes()">Start</button>
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -21,8 +21,8 @@
                     <p>Create predefined stops</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-flat-button color="primary"
-                    [disabled]="!(route1 && route2)" (click)="createStopForRoute()">Start</button>
+                    <button mat-flat-button color="primary" [disabled]="!(route1 && route2)"
+                        (click)="createStopForRoute()">Start</button>
                 </mat-card-actions>
             </mat-card>
         </div>
@@ -32,23 +32,49 @@
 
     <h3>Coordinate requests</h3>
     <mat-card>
-        teste
+        <mat-card-content>
+            <p>{{ currentCoordinateRequest | json }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-flat-button color="primary" [disabled]="!createStopsCompleted" (click)="startPostCoordinate()">
+                Start
+            </button>
+        </mat-card-actions>
     </mat-card>
 
     <br>
     <h3>Route health</h3>
     <mat-card *ngIf="route1">
-        <mat-card-title>{{route1.routePlan}}</mat-card-title>
+        <mat-card-title>#{{route1.id}} - {{route1.routePlan}} - {{route1.status}}</mat-card-title>
         <mat-card-content>
-            <p>{{route1 | json}}</p>
+            <mat-progress-bar *ngIf="route1.status == 'EM_PROGRESSO'" mode="buffer"></mat-progress-bar>
+            <mat-list *ngIf="route1.plannedStops">
+                <mat-divider></mat-divider>
+                <div mat-subheader>Stops</div>
+                <mat-list-item *ngFor="let stop of route1.plannedStops">
+                    <mat-icon mat-list-icon>location_on</mat-icon>
+                    <div mat-line><b>Description:</b> {{stop.description}}</div>
+                    <div mat-line><b>StartedAt:</b> {{stop.startedAt | date:'medium'}} <b>- CompletedAt:</b> {{stop.completedAt | date:'medium'}}</div>
+                </mat-list-item>
+            </mat-list>
         </mat-card-content>
     </mat-card>
     <mat-card *ngIf="route2">
-        <mat-card-title>{{route2.routePlan}}</mat-card-title>
+        <mat-card-title>#{{route2.id}} - {{route2.routePlan}} - {{route2.status}}</mat-card-title>
         <mat-card-content>
-            <p>{{route2 | json}}</p>
+            <mat-progress-bar *ngIf="route2.status == 'EM_PROGRESSO'" mode="buffer"></mat-progress-bar>
+            <mat-list *ngIf="route2.plannedStops">
+                <mat-divider></mat-divider>
+                <div mat-subheader>Stops</div>
+                <mat-list-item *ngFor="let stop of route2.plannedStops">
+                    <mat-icon mat-list-icon>location_on</mat-icon>
+                    <div mat-line><b>Description:</b> {{stop.description}}</div>
+                    <div mat-line><b>StartedAt:</b> {{stop.startedAt | date:'medium'}} <b>- CompletedAt:</b> {{stop.completedAt | date:'medium'}}</div>
+                </mat-list-item>
+            </mat-list>
         </mat-card-content>
     </mat-card>
 
-    
-</div> <!--container-->
+
+</div>
+<!--container-->

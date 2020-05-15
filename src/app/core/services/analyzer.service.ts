@@ -16,7 +16,7 @@ export class AnalyzerService {
 
     }
 
-    sendCordinate(form: any): Observable<HttpResponse<any>> {
+    sendCoordinate(form: any): Observable<HttpResponse<any>> {
         const path = `${this.resourceUrl}/receive-coordinate`;
         return this.httpClient.post(path, form, {observe: 'response'});
     }
